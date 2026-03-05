@@ -1,0 +1,121 @@
+// ─── Additional CSS overrides ─────────────────────────────────────────────────
+// Applied after all Bootstrap and CleanBlog styles.
+// Use this file to tune details without rebuilding the whole theme.
+
+// ── Typography ───────────────────────────────────────────────────────────────
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.post-heading h1,
+.site-heading h1 {
+  letter-spacing: -0.02em;
+}
+
+// ── Inline code ──────────────────────────────────────────────────────────────
+:not(pre) > code {
+  background-color: #eef0fb;
+  color: #4834d4;
+  padding: 0.15em 0.45em;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-weight: 500;
+}
+
+// ── Code blocks (pairs with Prism.js dark theme loaded in _head.cshtml) ──────
+pre[class*="language-"],
+pre code {
+  border-radius: 8px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+// ── Tables ───────────────────────────────────────────────────────────────────
+.post-content table,
+article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.post-content th,
+article th {
+  background: #6c63ff;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+
+.post-content td,
+article td {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.post-content tr:hover td,
+article tr:hover td {
+  background: #f8f9fa;
+}
+
+// ── Share buttons ─────────────────────────────────────────────────────────────
+.share-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 2rem 0 0.5rem;
+  align-items: center;
+
+  span.share-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #636e72;
+    margin-right: 0.25rem;
+  }
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.38rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  color: #fff !important;
+  transition: opacity 0.2s, transform 0.1s;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.82;
+    transform: translateY(-1px);
+  }
+
+  &--twitter  { background: #000; }
+  &--linkedin { background: #0077b5; }
+  &--copy     { background: #6c63ff; }
+}
+
+// ── Comments section spacing ──────────────────────────────────────────────────
+.giscus-frame {
+  margin-top: 1.5rem;
+}
+
+// ── Responsive video embeds ───────────────────────────────────────────────────
+iframe[src*="youtube"],
+iframe[src*="vimeo"] {
+  max-width: 100%;
+  border-radius: 8px;
+  display: block;
+  margin: 1.5rem auto;
+}
+
+// ── Tag badges ────────────────────────────────────────────────────────────────
+.badge-tag,
+span.badge {
+  border-radius: 4px;
+  font-size: 0.75rem;
+  padding: 0.3em 0.6em;
+}

@@ -1,0 +1,36 @@
+@* Share buttons — shown at the bottom of every post, before comments.
+   Uses plain HTML anchor links; no JavaScript needed except for the copy-link button
+   (handled in _scripts.cshtml). *@
+
+@{
+    var postTitle = Uri.EscapeDataString(Document.GetString("Title") ?? string.Empty);
+    var postUrl   = Uri.EscapeDataString(Document.GetLink(true));
+
+    var twitterUrl  = $"https://twitter.com/intent/tweet?text={postTitle}&url={postUrl}";
+    var linkedInUrl = $"https://www.linkedin.com/sharing/share-offsite/?url={postUrl}";
+}
+
+<div class="share-buttons" aria-label="Share this post">
+    <span class="share-label">Share:</span>
+
+    <a href="@twitterUrl"
+       class="share-btn share-btn--twitter"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Share on Twitter / X">
+        𝕏 Twitter
+    </a>
+
+    <a href="@linkedInUrl"
+       class="share-btn share-btn--linkedin"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Share on LinkedIn">
+        in LinkedIn
+    </a>
+
+    <button id="copy-link-btn"
+            class="share-btn share-btn--copy"
+            onclick="copyPostLink()"
+            aria-label="Copy post URL to clipboard">
+        🔗 Copy link
+    </button>
+</div>

@@ -6,6 +6,9 @@
 # Statiq build output (deployed to gh-pages, not committed to main)
 output/
 
+# Statiq razor compilation cache (regenerated on each build)
+cache/
+
 # OS
 .DS_Store
 Thumbs.db

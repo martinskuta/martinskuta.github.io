@@ -1,0 +1,40 @@
+name: Scheduled Publish
+
+# Rebuilds the site daily so posts with a future Published date go live on the right day.
+# You can also trigger this manually from the Actions tab (workflow_dispatch).
+on:
+  schedule:
+    - cron: '0 8 * * *'   # Every day at 08:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build site
+        run: dotnet run --configuration Release
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
+          cname: ''   # Set to your custom domain once you have one

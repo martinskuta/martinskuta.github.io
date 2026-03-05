@@ -1,0 +1,4 @@
+# Posts with a future Published date are not written to disk until that date arrives.
+# This pairs with the IsPost override in settings.yml which hides them from the archive.
+# Drafts use `Excluded: true` in their own front matter and are never processed at all.
+ShouldOutput: => Document.GetDateTime("Published") <= Context.GetCurrentDateTime()

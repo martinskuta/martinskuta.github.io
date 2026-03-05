@@ -1,0 +1,36 @@
+# ─── Hosting ──────────────────────────────────────────────────────────────────
+Host: martinskuta.github.io
+LinksUseHttps: true
+
+# ─── Branding ─────────────────────────────────────────────────────────────────
+SiteTitle: Martin Skuta
+SiteDescription: .NET developer, open-source tinkerer, and occasional blogger.
+Copyright: => @$"© {DateTime.Now.Year} Martin Skuta"
+
+# ─── Blog settings ────────────────────────────────────────────────────────────
+# Invariant culture = use yyyy-MM-dd dates in front matter
+DateTimeInputCulture: ""
+DateTimeDisplayCulture: en-US
+
+# Enable the built-in full-text search index and search page
+GenerateSearchIndex: true
+
+# ─── Social / Header ──────────────────────────────────────────────────────────
+HeaderImage: /assets/images/home-bg.jpg
+HeaderColor: "#1a1a2e"
+
+# ─── Comments (Giscus — backed by GitHub Discussions) ────────────────────────
+# To configure:
+#  1. Go to https://giscus.app
+#  2. Enter your repo name (e.g. martinskuta/martinskuta.github.io)
+#  3. Copy the repo ID, category ID from the generated <script> tag
+#  4. Replace the placeholder values below
+CommentEngine: giscus
+GiscusRepoName: martinskuta/martinskuta.github.io
+GiscusRepoId: "REPLACE_WITH_REPO_ID"          # from giscus.app
+GiscusCategoryId: "REPLACE_WITH_CATEGORY_ID"  # from giscus.app — use an "Announcements" category
+
+# ─── Scheduled posts ──────────────────────────────────────────────────────────
+# Override IsPost to exclude future-dated posts from the archive listing.
+# (The post file itself is also not written to disk — see input/posts/_directory.yml)
+IsPost: => Context.Outputs.FilterSources(Context.GetString("PostSources")).ContainsById(Document) && Document.GetDateTime("Published") <= Context.GetCurrentDateTime()
