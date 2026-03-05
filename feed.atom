@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<id>https://martinskuta.github.io/</id>
+	<title>Martin Skuta</title>
+	<link rel="self" href="https://martinskuta.github.io/" />
+	<rights>© 2026 Martin Skuta</rights>
+	<updated>2026-03-05T10:53:27Z</updated>
+	<subtitle>.NET developer, open-source tinkerer, and occasional blogger.</subtitle>
+	<entry>
+		<id>https://martinskuta.github.io/posts/2025-03-05-hello-world</id>
+		<title>Hello World — My First Post</title>
+		<link href="https://martinskuta.github.io/posts/2025-03-05-hello-world" />
+		<link rel="enclosure" type="image" href="https://martinskuta.github.io/assets/images/post-bg.jpg" />
+		<updated>2025-03-05T00:00:00Z</updated>
+		<content>&lt;p&gt;Welcome to my blog! 🎉&lt;/p&gt;
+&lt;p&gt;This is the first post, mostly to verify that everything is wired up correctly.
+Here's a quick tour of what this blog supports.&lt;/p&gt;
+&lt;h2 id="code-snippets"&gt;Code Snippets&lt;/h2&gt;
+&lt;p&gt;Syntax highlighting works out of the box. Here's a minimal ASP.NET Core app:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-csharp"&gt;var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.MapGet(&amp;quot;/&amp;quot;, () =&amp;gt; &amp;quot;Hello from .NET!&amp;quot;);
+
+app.Run();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And some shell commands:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-bash"&gt;dotnet run -- preview
+# → open http://localhost:5080
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="tables"&gt;Tables&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Feature&lt;/th&gt;
+&lt;th&gt;Status&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Markdown posts&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Code highlighting&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RSS feed&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Full-text search&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Comments&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Reactions&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="embedding-a-video"&gt;Embedding a video&lt;/h2&gt;
+&lt;p&gt;You can drop a plain HTML &lt;code&gt;&amp;lt;iframe&amp;gt;&lt;/code&gt; anywhere in a Markdown post:&lt;/p&gt;
+&lt;iframe width="560" height="315"
+  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+  title="YouTube video"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen&gt;
+&lt;/iframe&gt;
+&lt;hr /&gt;
+&lt;p&gt;That's it for the first post. More to come!&lt;/p&gt;
+</content>
+		<summary>&lt;p&gt;Welcome to my blog! 🎉&lt;/p&gt;</summary>
+	</entry>
+</feed>
