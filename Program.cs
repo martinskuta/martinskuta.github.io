@@ -38,17 +38,17 @@ static void PreCompileScss()
 {
     Directory.CreateDirectory("output/scss");
 
-    // The theme's main SCSS entry point is theme/input/scss/clean-blog.scss.
-    // Our override partials (_variable-overrides.scss, _overrides.scss, etc.)
-    // live in the scss/ folder at the project root.
-    // dart-sass resolves @import relative to the source file first, then in
-    // the --load-path directories — so we just need to add scss/ as a load path.
+    // We compile from scss/clean-blog.scss (our entry point) rather than
+    // theme/input/scss/clean-blog.scss. This is necessary because dart-sass
+    // resolves @import relative to the source file's directory first, which
+    // would find the theme's empty placeholder files (_bootstrap-variable-overrides.scss
+    // etc.) before our project-level overrides in scss/. By compiling from
+    // scss/, all placeholder imports resolve to OUR files first.
     // On Windows, `sass` is a .cmd shim — must invoke via cmd.exe /c
     var info = new ProcessStartInfo
     {
         FileName = "cmd.exe",
-        Arguments = "/c sass theme/input/scss/clean-blog.scss output/scss/clean-blog.css" +
-                    " --load-path scss" +
+        Arguments = "/c sass scss/clean-blog.scss output/scss/clean-blog.css" +
                     " --style compressed --no-source-map",
         UseShellExecute = false,
         CreateNoWindow = true,

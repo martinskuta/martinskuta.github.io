@@ -1,0 +1,4 @@
+// Bootstrap variable overrides (pre-!default).
+// This runs after Bootstrap functions but before Bootstrap's own $variables.
+// The theme's _colors.scss (imported before this) sets $primary: $teal unconditionally,
+// so variable overrides that need to win against that go in _bootstrap-variable-overrides.scss instead.

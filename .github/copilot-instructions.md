@@ -11,10 +11,10 @@ Personal website and blog built with [Statiq Web](https://statiq.dev/web) (.NET 
 dotnet run -- preview
 
 # One-shot build to output/
-dotnet run -- build
+dotnet run
 ```
 
-> **ARM64 Windows only:** `Program.cs` detects ARM64 and falls back to the dart-sass CLI instead of SharpScss. The `sass` command must be in PATH (`npm install -g sass`). The build uses `--noclean` to preserve pre-compiled CSS.
+> **ARM64 Windows only:** `Program.cs` detects ARM64 and falls back to the dart-sass CLI instead of SharpScss. The `sass` command must be in PATH (`npm install -g sass`). The SCSS entry point is `scss/clean-blog.scss` (not `theme/input/scss/clean-blog.scss`), which ensures project-level SCSS overrides in `scss/` are resolved before the theme's empty placeholder files.
 
 ## Theme customization
 

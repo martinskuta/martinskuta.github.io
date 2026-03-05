@@ -1,3 +1,3 @@
-// CleanBlog masthead gradient color (defaults to $primary if not set)
-$masthead-main-color: #1a1a2e;   // deep indigo — the gradient end
-$masthead-gradient-spread: 55%;  // wider spread for a richer gradient
+// Deepest background for masthead gradient — gives a terminal "void" feel
+$masthead-main-color:      #11111b;
+$masthead-gradient-spread: 70%;

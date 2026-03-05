@@ -1,6 +1,24 @@
-// Override Bootstrap's primary color.
-// This trickles into buttons, links, nav underlines, badges, and the masthead.
-$primary: #6c63ff;   // vibrant purple-blue
+// ── Terminal palette ─────────────────────────────────────────────────────────
+// Based on Catppuccin Mocha — dark purple-tinted theme.
 
-// Slightly lighter for hover states
-$link-hover-color: #4834d4;
+$primary:          #cba6f7;   // mauve — ties to the original purple brand
+$link-color:       #89b4fa;   // blue — readable links
+$link-hover-color: #cba6f7;   // purple on hover
+
+// Dark body
+$body-bg:    #1e1e2e;
+$body-color: #cdd6f4;
+
+$headings-color: #e6e9f4;
+$text-muted:     #6c7086;
+
+// Borders
+$border-color:               #45475a;
+$border-color-translucent:   rgba(69, 71, 90, 0.6);
+
+// Form inputs (search in navbar)
+$input-bg:                #313244;
+$input-color:             #cdd6f4;
+$input-border-color:      #585b70;
+$input-focus-border-color:#cba6f7;
+$input-placeholder-color: #6c7086;

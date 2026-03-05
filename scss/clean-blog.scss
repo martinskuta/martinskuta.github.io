@@ -1,0 +1,102 @@
+// ─── Site SCSS entry point ────────────────────────────────────────────────────
+// This file replaces theme/input/scss/clean-blog.scss as the dart-sass
+// compilation entry point on ARM64 (see Program.cs).
+//
+// It re-declares the same import chain but resolves overrides from THIS
+// directory first, ensuring our project files shadow the theme's empty
+// placeholder files (bootstrap-variable-overrides, variable-overrides, overrides).
+//
+// Sync with theme/input/scss/clean-blog.scss when the theme submodule is updated.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ---BEGIN --- Import Bootstrap
+
+@import "../theme/input/vendor/bootstrap/scss/mixins/banner";
+@include bsBanner("");
+
+// Configuration
+@import "../theme/input/vendor/bootstrap/scss/functions";
+
+// Bootstrap variable customization
+// Order matters: _colors.scss sets $primary: $teal (no !default).
+// Our bootstrap-variable-overrides then overrides it to our palette.
+@import '../theme/input/vendor/startbootstrap-clean-blog/scss/variables';
+@import 'bootstrap-variables';
+@import 'bootstrap-variable-overrides';  // resolves to scss/_bootstrap-variable-overrides.scss ✓
+
+// Configuration
+@import "../theme/input/vendor/bootstrap/scss/variables";
+@import "../theme/input/vendor/bootstrap/scss/maps";
+@import "../theme/input/vendor/bootstrap/scss/mixins";
+@import "../theme/input/vendor/bootstrap/scss/utilities";
+
+// Layout & components
+@import "../theme/input/vendor/bootstrap/scss/root";
+@import "../theme/input/vendor/bootstrap/scss/reboot";
+@import "../theme/input/vendor/bootstrap/scss/type";
+@import "../theme/input/vendor/bootstrap/scss/images";
+@import "../theme/input/vendor/bootstrap/scss/containers";
+@import "../theme/input/vendor/bootstrap/scss/grid";
+@import "../theme/input/vendor/bootstrap/scss/tables";
+@import "../theme/input/vendor/bootstrap/scss/forms";
+@import "../theme/input/vendor/bootstrap/scss/buttons";
+@import "../theme/input/vendor/bootstrap/scss/transitions";
+@import "../theme/input/vendor/bootstrap/scss/dropdown";
+@import "../theme/input/vendor/bootstrap/scss/button-group";
+@import "../theme/input/vendor/bootstrap/scss/nav";
+@import "../theme/input/vendor/bootstrap/scss/navbar";
+@import "../theme/input/vendor/bootstrap/scss/card";
+@import "../theme/input/vendor/bootstrap/scss/accordion";
+@import "../theme/input/vendor/bootstrap/scss/breadcrumb";
+@import "../theme/input/vendor/bootstrap/scss/pagination";
+@import "../theme/input/vendor/bootstrap/scss/badge";
+@import "../theme/input/vendor/bootstrap/scss/alert";
+@import "../theme/input/vendor/bootstrap/scss/progress";
+@import "../theme/input/vendor/bootstrap/scss/list-group";
+@import "../theme/input/vendor/bootstrap/scss/close";
+@import "../theme/input/vendor/bootstrap/scss/toasts";
+@import "../theme/input/vendor/bootstrap/scss/modal";
+@import "../theme/input/vendor/bootstrap/scss/tooltip";
+@import "../theme/input/vendor/bootstrap/scss/popover";
+@import "../theme/input/vendor/bootstrap/scss/carousel";
+@import "../theme/input/vendor/bootstrap/scss/spinners";
+@import "../theme/input/vendor/bootstrap/scss/offcanvas";
+@import "../theme/input/vendor/bootstrap/scss/placeholders";
+
+// Helpers
+@import "../theme/input/vendor/bootstrap/scss/helpers";
+
+// Utilities
+@import "../theme/input/vendor/bootstrap/scss/utilities/api";
+
+// --- END --- Import Bootstrap
+
+// Theme variables
+@import '../theme/input/scss/variables';
+@import 'variable-overrides';  // resolves to scss/_variable-overrides.scss ✓
+
+// Global CSS
+@import '../theme/input/vendor/startbootstrap-clean-blog/scss/global';
+
+// Components
+@import '../theme/input/vendor/startbootstrap-clean-blog/scss/components/buttons';
+@import '../theme/input/vendor/startbootstrap-clean-blog/scss/components/forms';
+@import '../theme/input/vendor/startbootstrap-clean-blog/scss/components/navbar';
+
+// Sections
+@import '../theme/input/vendor/startbootstrap-clean-blog/scss/sections/footer';
+@import '../theme/input/vendor/startbootstrap-clean-blog/scss/sections/masthead';
+@import '../theme/input/vendor/startbootstrap-clean-blog/scss/sections/post';
+
+// Extra theme styles
+@import '../theme/input/scss/badge';
+@import '../theme/input/scss/blockquote';
+@import '../theme/input/scss/buttons';
+@import '../theme/input/scss/extras';
+@import '../theme/input/scss/footer';
+@import '../theme/input/scss/masthead';
+@import '../theme/input/scss/navbar';
+@import '../theme/input/scss/post';
+
+// Site-specific overrides (must be last)
+@import 'overrides';  // resolves to scss/_overrides.scss ✓

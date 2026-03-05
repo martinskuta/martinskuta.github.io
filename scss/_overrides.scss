@@ -1,6 +1,273 @@
-// ─── Additional CSS overrides ─────────────────────────────────────────────────
+// ── Terminal theme — CSS overrides ───────────────────────────────────────────
 // Applied after all Bootstrap and CleanBlog styles.
-// Use this file to tune details without rebuilding the whole theme.
+// Palette uses CSS custom properties so every rule references a single source.
+
+:root {
+  --term-bg:      #1e1e2e;
+  --term-surface: #181825;
+  --term-overlay: #313244;
+  --term-text:    #cdd6f4;
+  --term-subtle:  #a6adc8;
+  --term-accent:  #cba6f7;
+  --term-green:   #a6e3a1;
+  --term-blue:    #89b4fa;
+  --term-border:  #45475a;
+}
+
+// ── Body ──────────────────────────────────────────────────────────────────────
+body {
+  font-family: 'Open Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--term-bg);
+  color: var(--term-text);
+}
+
+// ── Links ─────────────────────────────────────────────────────────────────────
+a {
+  color: var(--term-blue);
+  &:hover { color: var(--term-accent); }
+}
+
+// ── Horizontal rule ───────────────────────────────────────────────────────────
+hr {
+  border-color: var(--term-border);
+  opacity: 1;
+}
+
+// ── Navigation — terminal window title bar ────────────────────────────────────
+#mainNav {
+  background-color: var(--term-surface) !important;
+  border-bottom: 1px solid var(--term-border);
+  text-shadow: none !important;
+
+  &.is-fixed {
+    background-color: var(--term-surface) !important;
+    border-bottom-color: var(--term-border) !important;
+  }
+
+  .navbar-brand {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.9rem;
+    color: var(--term-text) !important;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .nav-link {
+    color: var(--term-subtle) !important;
+    font-size: 0.85rem;
+
+    &:hover, &.active { color: var(--term-accent) !important; }
+  }
+
+  .navbar-toggler {
+    border-color: var(--term-border);
+    color: var(--term-subtle);
+  }
+
+  // Search input
+  .form-control {
+    background: var(--term-overlay);
+    border-color: var(--term-border);
+    color: var(--term-text);
+
+    &::placeholder { color: #6c7086; }
+    &:focus {
+      border-color: var(--term-accent);
+      box-shadow: 0 0 0 0.2rem rgba(203, 166, 247, 0.15);
+    }
+  }
+}
+
+// ── Terminal window dots ───────────────────────────────────────────────────────
+.term-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  .term-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    &--red    { background: #ff5f57; }
+    &--yellow { background: #ffbd2e; }
+    &--green  { background: #28c840; }
+  }
+}
+
+// ── Navbar gif — remove white background on dark theme ────────────────────────
+// filter: invert(1) turns dark-on-white → light-on-black, then screen blend
+// makes the black "background" disappear against the dark navbar.
+.navbar-brand img {
+  //filter: invert(1);
+  mix-blend-mode: lighten;
+}
+
+// ── Masthead ──────────────────────────────────────────────────────────────────
+header.masthead {
+  h1 {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  // ">" prompt only on the home/site heading, not on every post
+  .site-heading h1::before {
+    content: '>_ ';
+    color: var(--term-green);
+  }
+}
+
+// ── Post preview list ─────────────────────────────────────────────────────────
+.post-preview {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--term-border);
+
+  &:last-of-type { border-bottom: none; }
+
+  .post-title a {
+    color: var(--term-text);
+    &:hover { color: var(--term-accent); text-decoration: none; }
+  }
+
+  .post-subtitle { color: var(--term-subtle); }
+
+  .post-meta {
+    color: #6c7086;
+    font-size: 0.78rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+// ── Footer ────────────────────────────────────────────────────────────────────
+footer {
+  background-color: var(--term-surface);
+  border-top: 1px solid var(--term-border);
+  color: var(--term-subtle);
+
+  a {
+    color: var(--term-subtle);
+    &:hover { color: var(--term-accent); }
+  }
+}
+
+// ── Inline code ───────────────────────────────────────────────────────────────
+:not(pre) > code {
+  background-color: var(--term-overlay);
+  color: var(--term-green);
+  padding: 0.15em 0.45em;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-weight: 500;
+}
+
+// ── Code blocks ───────────────────────────────────────────────────────────────
+pre[class*="language-"],
+pre code {
+  border-radius: 8px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  border: 1px solid var(--term-border);
+}
+
+// ── Blockquote ────────────────────────────────────────────────────────────────
+blockquote {
+  border-left: 3px solid var(--term-accent);
+  padding-left: 1rem;
+  color: var(--term-subtle);
+  font-style: italic;
+}
+
+// ── Tables ────────────────────────────────────────────────────────────────────
+.post-content table,
+article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.post-content th,
+article th {
+  background: var(--term-overlay);
+  color: var(--term-accent);
+  padding: 0.6rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid var(--term-accent);
+}
+
+.post-content td,
+article td {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--term-border);
+}
+
+.post-content tr:hover td,
+article tr:hover td {
+  background: var(--term-overlay);
+}
+
+// ── Share buttons ─────────────────────────────────────────────────────────────
+.share-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 2rem 0 0.5rem;
+  align-items: center;
+
+  span.share-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--term-subtle);
+    margin-right: 0.25rem;
+  }
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.38rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  color: var(--term-surface) !important;
+  transition: opacity 0.2s, transform 0.1s;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.82;
+    transform: translateY(-1px);
+  }
+
+  &--twitter  { background: #cdd6f4; }
+  &--linkedin { background: #89b4fa; }
+  &--copy     { background: var(--term-accent); }
+}
+
+// ── Comments section ──────────────────────────────────────────────────────────
+.giscus-frame { margin-top: 1.5rem; }
+
+// ── Responsive video embeds ───────────────────────────────────────────────────
+iframe[src*="youtube"],
+iframe[src*="vimeo"] {
+  max-width: 100%;
+  border-radius: 8px;
+  display: block;
+  margin: 1.5rem auto;
+}
+
+// ── Tag badges ────────────────────────────────────────────────────────────────
+.badge-tag,
+span.badge {
+  border-radius: 4px;
+  font-size: 0.75rem;
+  padding: 0.3em 0.6em;
+}
 
 // ── Typography ───────────────────────────────────────────────────────────────
 body {
