@@ -45,8 +45,8 @@ var x = 42;
 
 | Goal | How |
 |------|-----|
-| **Draft** (never publish) | `IsPublished: false` in front matter |
-| **Scheduled** (publish on a date) | `Published: 2025-07-01` (future date) — goes live on that day via the daily cron rebuild |
+| **Draft** (never publish) | `Excluded: true` in front matter — completely skipped by the build |
+| **Scheduled** (publish on a date) | Set `Published: 2026-07-01` (future date) — goes live on that day via the daily cron rebuild |
 
 ## Adding static pages
 
@@ -85,6 +85,23 @@ A daily cron in `.github/workflows/scheduled.yml` rebuilds the site so time-gate
 
 When you have a domain:
 
-1. Add a `CNAME` file to `input/` containing your domain (e.g. `martinskuta.com`)
-2. Set the domain value in both `.github/workflows/deploy.yml` and `scheduled.yml` (`cname:` key)
-3. Configure DNS: point `@` to GitHub Pages IPs and/or `www` CNAME to `martinskuta.github.io`
+1. Create `input/CNAME` with just your domain on one line (e.g. `martinskuta.dev`)
+2. Set `cname: martinskuta.dev` in both `.github/workflows/deploy.yml` and `scheduled.yml`
+3. In your DNS provider, add the following records:
+
+```
+# Apex domain (@):
+A    @    185.199.108.153
+A    @    185.199.109.153
+A    @    185.199.110.153
+A    @    185.199.111.153
+AAAA @    2606:50c0:8000::153
+AAAA @    2606:50c0:8001::153
+AAAA @    2606:50c0:8002::153
+AAAA @    2606:50c0:8003::153
+
+# WWW subdomain:
+CNAME  www  martinskuta.github.io
+```
+
+4. In the GitHub repo → Settings → Pages → set "Custom domain" and enable "Enforce HTTPS"
