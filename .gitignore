@@ -1,0 +1,17 @@
+# .NET build artifacts
+[Bb]in/
+[Oo]bj/
+*.user
+
+# Statiq build output (deployed to gh-pages, not committed to main)
+output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vs/
+.vscode/
+*.suo
+*.user
