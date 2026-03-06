@@ -1,0 +1,93 @@
+ShowInNavbar: => GetInt("Index") == 0
+Order: 100
+Title: Tags
+ArchiveSources: => GetString("PostSources")
+ArchiveFilter: => GetBool("IsPost")
+ArchiveKey: Tags
+ArchiveKeyComparer: => StringComparer.OrdinalIgnoreCase.ToConvertingEqualityComparer()
+ArchiveDestination: >
+  => GetInt("Index") <= 1 ? $"tags/{NormalizedPath.OptimizeFileName(GetString("GroupKey"))}/index.html" : $"tags/{NormalizedPath.OptimizeFileName(GetString("GroupKey"))}/{GetInt("Index")}.html"
+ArchivePageSize: 10
+ArchiveOrderKey: Published
+ArchiveOrderDescending: true
+ArchiveTitle: >
+  => string.IsNullOrWhiteSpace(GetString("GroupKey")) ? GetString("Title") : GetString("GroupKey")
+---
+@using System.Globalization
+@functions {
+  public static string GetTagWeight(int count, int minCount, int maxCount)
+  {
+    if (maxCount <= minCount)
+    {
+      return "1.05";
+    }
+
+    double normalized = (double) (count - minCount) / (maxCount - minCount);
+    double scale = 0.9 + (normalized * 0.95);
+    return scale.ToString("0.###", CultureInfo.InvariantCulture);
+  }
+}
+@{
+  bool isTagArchive = Document.ContainsKey(Keys.GroupKey);
+  IDocument tagIndex = isTagArchive ? OutputPages.Get("tags/index.html") : Document;
+  IDocument[] allTags = tagIndex is null
+    ? Array.Empty<IDocument>()
+    : tagIndex.GetChildren()
+      .OrderBy(x => x.GetTitle(), StringComparer.OrdinalIgnoreCase)
+      .ToArray();
+  int minPostCount = allTags.Length > 0 ? allTags.Min(x => x.GetChildren().Count()) : 0;
+  int maxPostCount = allTags.Length > 0 ? allTags.Max(x => x.GetChildren().Count()) : 0;
+  string currentTag = Document.GetString(Keys.GroupKey);
+}
+
+@if (isTagArchive)
+{
+  <div class="container-sm-height">
+    <div class="row row-sm-height">
+      <div class="col-md-7 right-border col-sm-height">
+        @Html.Partial("/_posts.cshtml", Document)
+      </div>
+      <div class="col-md-5 mt-4 mt-md-0 col-sm-height sidebar">
+        <div class="tag-cloud-panel">
+          <h5>All tags</h5>
+          <div class="tag-cloud tag-cloud--sidebar" aria-label="Tag cloud">
+            @foreach (IDocument tag in allTags)
+            {
+              int postCount = tag.GetChildren().Count();
+              bool isCurrentTag = currentTag.Equals(tag.GetTitle(), StringComparison.OrdinalIgnoreCase);
+              string activeClass = isCurrentTag ? " tag-cloud__tag--active" : string.Empty;
+              string weight = GetTagWeight(postCount, minPostCount, maxPostCount);
+
+              <a href="@Context.GetLink(tag)" class="@(string.Concat("tag-cloud__tag", activeClass))" style="--tag-cloud-weight: @weight;" aria-label="@($"{tag.GetTitle()} ({postCount} posts)")">
+                <span class="tag-cloud__name">@tag.GetTitle()</span>
+                <span class="tag-cloud__count">@postCount</span>
+              </a>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+else if (allTags.Length > 0)
+{
+  <div class="tag-cloud-page">
+    <p class="tag-cloud__intro">Browse topics by frequency. Larger labels represent more posts.</p>
+    <div class="tag-cloud tag-cloud--page" aria-label="Tag cloud">
+      @foreach (IDocument tag in allTags)
+      {
+        int postCount = tag.GetChildren().Count();
+        string weight = GetTagWeight(postCount, minPostCount, maxPostCount);
+
+        <a href="@Context.GetLink(tag)" class="tag-cloud__tag" style="--tag-cloud-weight: @weight;" aria-label="@($"{tag.GetTitle()} ({postCount} posts)")">
+          <span class="tag-cloud__name">@tag.GetTitle()</span>
+          <span class="tag-cloud__count">@postCount</span>
+        </a>
+      }
+    </div>
+  </div>
+}
+else
+{
+  <p>No tags available yet.</p>
+}
