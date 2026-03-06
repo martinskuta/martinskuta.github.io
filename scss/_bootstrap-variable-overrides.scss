@@ -1,24 +1,22 @@
 // ── Terminal palette ─────────────────────────────────────────────────────────
-// Based on Catppuccin Mocha — dark purple-tinted theme.
+// Compile-time Bootstrap defaults lean dark; runtime light mode is handled by
+// CSS custom properties in _overrides.scss.
 
-$primary:          #cba6f7;   // mauve — ties to the original purple brand
-$link-color:       #89b4fa;   // blue — readable links
-$link-hover-color: #cba6f7;   // purple on hover
+$primary:          #22d3ee;
+$link-color:       #38bdf8;
+$link-hover-color: #67e8f9;
 
-// Dark body
-$body-bg:    #1e1e2e;
-$body-color: #cdd6f4;
+$body-bg:    #08111f;
+$body-color: #d7e3f4;
 
-$headings-color: #e6e9f4;
-$text-muted:     #6c7086;
+$headings-color: #f8fbff;
+$text-muted:     #93a9c5;
 
-// Borders
-$border-color:               #45475a;
-$border-color-translucent:   rgba(69, 71, 90, 0.6);
+$border-color:             #22314a;
+$border-color-translucent: rgba(34, 49, 74, 0.65);
 
-// Form inputs (search in navbar)
-$input-bg:                #313244;
-$input-color:             #cdd6f4;
-$input-border-color:      #585b70;
-$input-focus-border-color:#cba6f7;
-$input-placeholder-color: #6c7086;
+$input-bg:                 #0f172a;
+$input-color:              #d7e3f4;
+$input-border-color:       #2f435f;
+$input-focus-border-color: #22d3ee;
+$input-placeholder-color:  #7290b0;

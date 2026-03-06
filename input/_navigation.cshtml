@@ -6,27 +6,36 @@
         <span class="term-dot term-dot--yellow"></span>
         <span class="term-dot term-dot--green"></span>
       </span>
-      <img src="/assets/images/skuticzS.gif" height="32" alt="" />
-      @Context.GetString("SiteTitle")
+      <img class="navbar-brand__logo" src="/assets/images/skuticzS.gif" height="32" alt="" />
+      <span class="navbar-brand__text">
+        <span class="navbar-brand__title">@Context.GetString("SiteTitle")</span>
+        <span class="navbar-brand__path">~/portfolio</span>
+      </span>
     </a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       Menu
       <i class="fas fa-bars"></i>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         @Html.Partial("_navbar")
         @if (Context.GetBool(WebKeys.GenerateSearchIndex))
         {
-          <li class="nav-item">
-            <span class="nav-link">
-              <form class="form-inline my-2 my-lg-0" action="@Context.GetLink("/search")" method="GET">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query">
-                <input type="submit" hidden />
-              </form>
-            </span>
+          <li class="nav-item nav-item--search">
+            <form class="nav-search my-2 my-lg-0" action="@Context.GetLink("/search")" method="GET">
+              <label class="visually-hidden" for="nav-search-query">Search posts</label>
+              <span class="nav-search__prompt" aria-hidden="true">grep</span>
+              <input id="nav-search-query" class="form-control" type="search" placeholder="posts" aria-label="Search posts" name="query">
+              <input type="submit" hidden />
+            </form>
           </li>
         }
+        <li class="nav-item nav-item--theme">
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme" title="Switch to light theme">
+            <span class="theme-toggle__label">theme</span>
+            <span class="theme-toggle__value" data-theme-toggle-value>DARK</span>
+          </button>
+        </li>
       </ul>
     </div>
   </div>

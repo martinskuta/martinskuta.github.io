@@ -1,0 +1,85 @@
+@{
+  string title = Document.GetString("Title") ?? Document.GetString("SiteTitle");
+  string description = Document.WithoutSettings().GetString("Lead") ?? Document.WithoutSettings().GetString(WebKeys.Description);
+  bool isPost = Document.GetBool("IsPost") && !Document.GetBool("IsPostArchive");
+  bool isPage = Document.GetBool("IsPage");
+  string sessionLabel = isPost ? "post-session" : isPage ? "page-session" : "portfolio-session";
+  string promptPath = isPost ? "~/posts" : isPage ? "~/pages" : "~";
+  string command = isPost ? "render --post" : isPage ? "render --page" : "launch --portfolio";
+  string promptUser = (Context.GetString("SiteTitle") ?? "site")
+    .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+    .FirstOrDefault()?
+    .ToLowerInvariant() ?? "site";
+  string promptIdentity = $"{promptUser}@site";
+  IDocument[] tags = Document.ContainsKey("Tags")
+    ? Document.GetList<string>("Tags")
+      .Select(x => Outputs["tags/index.html"].First().GetChildren().FirstOrDefault(y => y.GetTitle().Equals(x, StringComparison.OrdinalIgnoreCase)))
+      .Where(x => x != null)
+      .ToArray()
+    : Array.Empty<IDocument>();
+}
+<header class="masthead terminal-masthead @(isPost ? "terminal-masthead--post" : isPage ? "terminal-masthead--page" : "terminal-masthead--home")">
+  <div class="container position-relative">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-xl-9">
+        <div class="terminal-panel">
+          <div class="terminal-panel__bar">
+            <span class="term-dots" aria-hidden="true">
+              <span class="term-dot term-dot--red"></span>
+              <span class="term-dot term-dot--yellow"></span>
+              <span class="term-dot term-dot--green"></span>
+            </span>
+            <span class="terminal-panel__title">@sessionLabel</span>
+            <span class="terminal-panel__status">ready</span>
+          </div>
+          <div class="terminal-panel__body">
+            <div class="terminal-panel__prompt" aria-hidden="true">
+              <span class="terminal-panel__user">@promptIdentity</span>
+              <span class="terminal-panel__path">@promptPath</span>
+              <span class="terminal-panel__symbol">$</span>
+              <span class="terminal-panel__command">@command</span>
+              <span class="terminal-cursor"></span>
+            </div>
+
+            <h1>
+              @title
+              @if (Document.GetInt(Keys.Index) > 1)
+              {
+                <small>(Page @Document.GetString(Keys.Index))</small>
+              }
+            </h1>
+
+            @if (!string.IsNullOrWhiteSpace(description))
+            {
+              <p class="terminal-panel__description">@description</p>
+            }
+
+            @if (isPost || Document.GetInt(Keys.Index) > 1)
+            {
+              <div class="terminal-panel__meta">
+                @if (isPost)
+                {
+                  <span>Published @Document.GetDateTime(WebKeys.Published).ToLongDateString(Context)</span>
+                }
+                @if (Document.GetInt(Keys.Index) > 1)
+                {
+                  <span>Archive page @Document.GetString(Keys.Index)</span>
+                }
+              </div>
+            }
+
+            @if (tags.Length > 0)
+            {
+              <div class="terminal-panel__tags">
+                @foreach (IDocument tag in tags)
+                {
+                  <a href="@Context.GetLink(tag)" class="terminal-tag">@tag.GetTitle()</a>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,10 +1,47 @@
 @* Injected into <head> on every page. *@
 
-@* JetBrains Mono — used for navbar brand, masthead headings, and post meta *@
+<script>
+  (function () {
+    var storageKey = 'site-theme';
+    var root = document.documentElement;
+    var storedTheme = null;
+
+    try {
+      storedTheme = window.localStorage.getItem(storageKey);
+    } catch (error) {
+      console.warn('Unable to read the saved theme preference.', error);
+    }
+
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = storedTheme === 'light' || storedTheme === 'dark'
+      ? storedTheme
+      : (prefersDark ? 'dark' : 'light');
+
+    root.setAttribute('data-theme', theme);
+    root.style.colorScheme = theme;
+    window.__siteTheme = {
+      storageKey: storageKey,
+      initialTheme: theme
+    };
+  })();
+</script>
+
+@* JetBrains Mono drives terminal chrome, hero prompts, and metadata. *@
 <link rel="preconnect" href="https://fonts.googleapis.com" data-no-mirror />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin data-no-mirror />
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" data-no-mirror />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" data-no-mirror />
 
-@* Prism.js syntax highlighting (dark theme overrides the default light theme in the layout) *@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+@* The layout already loads Prism's light theme; this dark theme is toggled at runtime. *@
+<link id="prism-dark-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" media="(prefers-color-scheme: dark)" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" />
+
+<script>
+  (function () {
+    var darkThemeLink = document.getElementById('prism-dark-theme');
+    var theme = document.documentElement.getAttribute('data-theme');
+
+    if (darkThemeLink && theme) {
+      darkThemeLink.media = theme === 'dark' ? 'all' : 'not all';
+    }
+  })();
+</script>
