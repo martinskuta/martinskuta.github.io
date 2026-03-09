@@ -822,9 +822,17 @@ pre code {
 }
 
 code[class*='language-'],
-pre[class*='language-'] {
+pre[class*='language-'],
+code[class*='language-'] *,
+pre[class*='language-'] * {
   font-family: var(--font-mono);
-  text-shadow: none;
+  /* Remove any shadows, strokes or filters added by syntax highlighter themes (e.g. Prism). */
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+  text-stroke: 0 !important;
+  filter: none !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 div.code-toolbar > .toolbar .toolbar-item > a,
