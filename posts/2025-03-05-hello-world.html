@@ -38,8 +38,49 @@
   <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet">
 
   
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+<script>
+  (function () {
+    var storageKey = 'site-theme';
+    var root = document.documentElement;
+    var storedTheme = null;
+
+    try {
+      storedTheme = window.localStorage.getItem(storageKey);
+    } catch (error) {
+      console.warn('Unable to read the saved theme preference.', error);
+    }
+
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = storedTheme === 'light' || storedTheme === 'dark'
+      ? storedTheme
+      : (prefersDark ? 'dark' : 'light');
+
+    root.setAttribute('data-theme', theme);
+    root.style.colorScheme = theme;
+    window.__siteTheme = {
+      storageKey: storageKey,
+      initialTheme: theme
+    };
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" data-no-mirror />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin data-no-mirror />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" data-no-mirror />
+
+<link id="prism-dark-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" media="(prefers-color-scheme: dark)" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" />
+
+<script>
+  (function () {
+    var darkThemeLink = document.getElementById('prism-dark-theme');
+    var theme = document.documentElement.getAttribute('data-theme');
+
+    if (darkThemeLink && theme) {
+      darkThemeLink.media = theme === 'dark' ? 'all' : 'not all';
+    }
+  })();
+</script>
 
 
   
@@ -49,15 +90,26 @@
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
   <div class="container">
-    <a class="navbar-brand" href='/'>Martin Skuta</a>
+    <a class="navbar-brand" href='/'>
+      <span class="term-dots" aria-hidden="true">
+        <span class="term-dot term-dot--red"></span>
+        <span class="term-dot term-dot--yellow"></span>
+        <span class="term-dot term-dot--green"></span>
+      </span>
+      <img class="navbar-brand__logo" src="/assets/images/skuticzS.gif" height="32" alt="" />
+      <span class="navbar-brand__text">
+        <span class="navbar-brand__title">Martin Skuta</span>
+        <span class="navbar-brand__path">~/portfolio</span>
+      </span>
+    </a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       Menu
       <i class="fas fa-bars"></i>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
           <li class="nav-item">
     <a class="nav-link" href="/pages/about">About</a>
   </li>
@@ -68,14 +120,20 @@
     <a class="nav-link" href="/tags">Tags</a>
   </li>
 
-          <li class="nav-item">
-            <span class="nav-link">
-              <form class="form-inline my-2 my-lg-0" action="/search" method="GET">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query">
-                <input type="submit" hidden />
-              </form>
-            </span>
+          <li class="nav-item nav-item--search">
+            <form class="nav-search my-2 my-lg-0" action="/search" method="GET">
+              <label class="visually-hidden" for="nav-search-query">Search posts</label>
+              <span class="nav-search__prompt" aria-hidden="true">grep</span>
+              <input id="nav-search-query" class="form-control" type="search" placeholder="posts" aria-label="Search posts" name="query">
+              <input type="submit" hidden />
+            </form>
           </li>
+        <li class="nav-item nav-item--theme">
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme" title="Switch to light theme">
+            <span class="theme-toggle__label">theme</span>
+            <span class="theme-toggle__value" data-theme-toggle-value>DARK</span>
+          </button>
+        </li>
       </ul>
     </div>
   </div>
@@ -83,20 +141,44 @@
 
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url(&quot;/assets/images/post-bg.jpg&quot;)">
+  <header class="masthead terminal-masthead terminal-masthead--post">
   <div class="container position-relative">
-    <div class="row">
-      <div class="col-md-12">
-        <div class='post-heading'>
-          <h1>
-            Hello World &#x2014; My First Post
-          </h1>
-            <span class="subheading">Every blog needs a first post. Here&#x27;s mine.</span>
-            <div class="meta">Published on Wednesday, March 5, 2025</div>
-              <div class="mt-3">
-                  <a href="/tags/meta" class="badge text-bg-light"> meta</a>
-                  <a href="/tags/blogging" class="badge text-bg-light"> blogging</a>
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-xl-9">
+        <div class="terminal-panel">
+          <div class="terminal-panel__bar">
+            <span class="term-dots" aria-hidden="true">
+              <span class="term-dot term-dot--red"></span>
+              <span class="term-dot term-dot--yellow"></span>
+              <span class="term-dot term-dot--green"></span>
+            </span>
+            <span class="terminal-panel__title">post-session</span>
+            <span class="terminal-panel__status">ready</span>
+          </div>
+          <div class="terminal-panel__body">
+            <div class="terminal-panel__prompt" aria-hidden="true">
+              <span class="terminal-panel__user">martin@site</span>
+              <span class="terminal-panel__path">~/posts</span>
+              <span class="terminal-panel__symbol">$</span>
+              <span class="terminal-panel__command">render --post</span>
+              <span class="terminal-cursor"></span>
+            </div>
+
+            <h1>
+              Hello World &#x2014; My First Post
+            </h1>
+
+              <p class="terminal-panel__description">Every blog needs a first post. Here&#x27;s mine.</p>
+
+              <div class="terminal-panel__meta">
+                  <span>Published Wednesday, March 5, 2025</span>
               </div>
+
+              <div class="terminal-panel__tags">
+                  <a href="/tags/meta" class="terminal-tag">meta</a>
+                  <a href="/tags/blogging" class="terminal-tag">blogging</a>
+              </div>
+          </div>
         </div>
       </div>
     </div>
@@ -202,20 +284,37 @@ app.Run();
       </div>
     </div>
   <div id="comments-container" class="row">
-    <script src="https://giscus.app/client.js"
-        data-repo='martinskuta/martinskuta.github.io'
-        data-repo-id='REPLACE_WITH_REPO_ID'
-        data-category-id='REPLACE_WITH_CATEGORY_ID'
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="light"
-        data-lang="en"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
+    <div class="col-12 terminal-comments">
+  <div id="giscus-container"></div>
+</div>
+<script>
+  (function () {
+    var container = document.getElementById('giscus-container');
+
+    if (!container) {
+      console.error('Unable to render comments because the Giscus container is missing.');
+      return;
+    }
+
+    var theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark_dimmed';
+    var script = document.createElement('script');
+
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', "martinskuta/martinskuta.github.io");
+    script.setAttribute('data-repo-id', "REPLACE_WITH_REPO_ID");
+    script.setAttribute('data-category-id', "REPLACE_WITH_CATEGORY_ID");
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'top');
+    script.setAttribute('data-theme', theme);
+    script.setAttribute('data-lang', 'en');
+    script.setAttribute('data-loading', 'lazy');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+    container.appendChild(script);
+  })();
 </script>
 
   </div>
@@ -251,19 +350,158 @@ app.Run();
   <script src='/vendor/startbootstrap-clean-blog/js/scripts.js'></script>
   <script src='/js/clean-blog.js'></script>
   
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
 
 <script>
   // Copy-link button for the share bar
   function copyPostLink() {
+    if (!navigator.clipboard) {
+      console.warn('Clipboard API is not available in this browser.');
+      return;
+    }
+
     navigator.clipboard.writeText(window.location.href).then(function () {
       var btn = document.getElementById('copy-link-btn');
-      if (btn) { btn.textContent = '✓ Copied!'; setTimeout(function() { btn.textContent = '🔗 Copy link'; }, 2000); }
+
+      if (btn) {
+        btn.textContent = 'Copied';
+        window.setTimeout(function () {
+          btn.textContent = 'Copy link';
+        }, 2000);
+      }
+    }).catch(function (error) {
+      console.error('Failed to copy the current post link.', error);
     });
   }
+</script>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var storageKey = (window.__siteTheme && window.__siteTheme.storageKey) || 'site-theme';
+    var mediaQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+    function readStoredTheme() {
+      try {
+        return window.localStorage.getItem(storageKey);
+      } catch (error) {
+        console.warn('Unable to read the saved theme preference.', error);
+        return null;
+      }
+    }
+
+    function writeStoredTheme(theme) {
+      try {
+        window.localStorage.setItem(storageKey, theme);
+      } catch (error) {
+        console.warn('Unable to save the selected theme preference.', error);
+      }
+    }
+
+    function resolveTheme() {
+      var currentTheme = root.getAttribute('data-theme');
+
+      if (currentTheme === 'light' || currentTheme === 'dark') {
+        return currentTheme;
+      }
+
+      return mediaQuery && mediaQuery.matches ? 'dark' : 'light';
+    }
+
+    function syncPrismTheme(theme) {
+      var darkThemeLink = document.getElementById('prism-dark-theme');
+
+      if (darkThemeLink) {
+        darkThemeLink.media = theme === 'dark' ? 'all' : 'not all';
+      }
+    }
+
+    function getGiscusTheme(theme) {
+      return theme === 'light' ? 'light' : 'dark_dimmed';
+    }
+
+    function syncThemeToggle(theme) {
+      var nextTheme = theme === 'dark' ? 'light' : 'dark';
+
+      document.querySelectorAll('[data-theme-toggle]').forEach(function (button) {
+        var value = button.querySelector('[data-theme-toggle-value]');
+
+        if (value) {
+          value.textContent = theme.toUpperCase();
+        }
+
+        button.setAttribute('aria-label', 'Switch to ' + nextTheme + ' theme');
+        button.setAttribute('title', 'Switch to ' + nextTheme + ' theme');
+      });
+    }
+
+    function syncGiscusTheme(theme, attempt) {
+      var iframe = document.querySelector('iframe.giscus-frame');
+      var currentAttempt = attempt || 0;
+
+      if (!iframe) {
+        if (currentAttempt < 12) {
+          window.setTimeout(function () {
+            syncGiscusTheme(theme, currentAttempt + 1);
+          }, 250);
+        }
+
+        return;
+      }
+
+      iframe.contentWindow.postMessage({
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }, 'https://giscus.app');
+    }
+
+    function applyTheme(theme, options) {
+      root.setAttribute('data-theme', theme);
+      root.style.colorScheme = theme;
+      syncPrismTheme(theme);
+      syncThemeToggle(theme);
+      syncGiscusTheme(theme);
+
+      if (options && options.persist) {
+        writeStoredTheme(theme);
+      }
+    }
+
+    function handleThemeToggleClick() {
+      var nextTheme = resolveTheme() === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme, { persist: true });
+    }
+
+    window.syncGiscusTheme = function (theme) {
+      syncGiscusTheme(theme || resolveTheme());
+    };
+
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (button) {
+      button.addEventListener('click', handleThemeToggleClick);
+    });
+
+    applyTheme(resolveTheme());
+
+    if (mediaQuery) {
+      var handleSystemThemeChange = function (event) {
+        if (readStoredTheme()) {
+          return;
+        }
+
+        applyTheme(event.matches ? 'dark' : 'light');
+      };
+
+      if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', handleSystemThemeChange);
+      } else if (typeof mediaQuery.addListener === 'function') {
+        mediaQuery.addListener(handleSystemThemeChange);
+      }
+    }
+  })();
 </script>
 
   
