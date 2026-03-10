@@ -6,9 +6,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>Martin Skuta - Posts</title>
+  <title>Martin Skuta - Syncing Logseq across devices</title>
 
-  <link rel="canonical" href='https://martinskuta.github.io/posts'>
+  <link rel="canonical" href='https://martinskuta.github.io/posts/2026-03-08-syncing-logseq'>
 
       <link type="application/rss+xml" rel="alternate" title="Martin Skuta" href="/feed.rss" />
       <link type="application/atom+xml" rel="alternate" title="Martin Skuta" href="/feed.atom" />
@@ -17,9 +17,9 @@
   <meta name="msapplication-tooltip" content='Martin Skuta' />
   <meta name="msapplication-starturl" content='/' />
 
-  <meta property="og:title" content='Martin Skuta - Posts' />
+  <meta property="og:title" content='Martin Skuta - Syncing Logseq across devices' />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content='https://martinskuta.github.io/posts' />
+  <meta property="og:url" content='https://martinskuta.github.io/posts/2026-03-08-syncing-logseq' />
 
   <link rel="icon" href='/favicon.ico'>
 
@@ -135,7 +135,7 @@
 
 
   <!-- Page Header -->
-  <header class="masthead terminal-masthead terminal-masthead--home">
+  <header class="masthead terminal-masthead terminal-masthead--post">
   <div class="container position-relative">
     <div class="row justify-content-center">
       <div class="col-12">
@@ -146,24 +146,34 @@
               <span class="term-dot term-dot--yellow"></span>
               <span class="term-dot term-dot--green"></span>
             </span>
-            <span class="terminal-panel__title">portfolio-session</span>
+            <span class="terminal-panel__title">post-session</span>
             <span class="terminal-panel__status">ready</span>
           </div>
           <div class="terminal-panel__body">
             <div class="terminal-panel__prompt" aria-hidden="true">
               <span class="terminal-panel__user">martin@site</span>
-              <span class="terminal-panel__path">~</span>
+              <span class="terminal-panel__path">~/posts</span>
               <span class="terminal-panel__symbol">$</span>
-              <span class="terminal-panel__command">launch --portfolio</span>
+              <span class="terminal-panel__command">render --post</span>
               <span class="terminal-cursor"></span>
             </div>
 
             <h1>
-              Posts
+              Syncing Logseq across devices
             </h1>
 
+              <p class="terminal-panel__description">How to use Logseq on PC and Android at the same time</p>
 
+              <div class="terminal-panel__meta">
+                  <span>Published Sunday, March 8, 2026</span>
+              </div>
 
+              <div class="terminal-panel__tags">
+                  <a href="/tags/logseq" class="terminal-tag">logseq</a>
+                  <a href="/tags/sync" class="terminal-tag">sync</a>
+                  <a href="/tags/android" class="terminal-tag">android</a>
+                  <a href="/tags/git" class="terminal-tag">git</a>
+              </div>
           </div>
         </div>
       </div>
@@ -176,24 +186,146 @@
   <div class="container">
     <div class="row">
       <div id="content" class="col-md-12">
-          <h1 class="bg-dark text-light p-2">2026</h1>
-    <div class="post-preview">
-      <h3 class="post-title"><a href="/posts/2026-03-08-syncing-logseq">Syncing Logseq across devices</a></h3>
-        <div class="post-subtitle">How to use Logseq on PC and Android at the same time</div>
-      <p class="post-meta">Published on Sunday, March 8, 2026</p>
-    </div>
-  <h1 class="bg-dark text-light p-2">2025</h1>
-    <div class="post-preview">
-      <h3 class="post-title"><a href="/posts/2025-03-05-hello-world">Hello World &#x2014; My First Post</a></h3>
-        <div class="post-subtitle">Every blog needs a first post. Here&#x27;s mine.</div>
-      <p class="post-meta">Published on Wednesday, March 5, 2025</p>
-    </div>
+        <h1 id="the-problem">The problem</h1>
+<p>I want to be able to use Logseq on multiple PCs and on a phone and have the data syncing automatically. Keeping a Logseq graph in sync across multiple devices is surprisingly tricky: desktop apps can run background sync, but on Android apps are resource-limited and can't reliably run background hooks. That leads to missed changes, conflicts, and manual steps unless you automate the process. And even the paid solutions are not always reliable.</p>
+<h2 id="warning-before-you-read-further">Warning before you read further</h2>
+<p>The Android solution below relies on an app that uses the Accessibility API to detect when Logseq opens or closes. That API can observe screen contents, so only enable it for apps you trust. Treat this as higher-risk than normal: prefer scoped tokens, review the app's source if possible, and avoid granting broad permissions unless necessary.</p>
+<h2 id="solution-overview">Solution overview</h2>
+<p>Our goal: keep a single, canonical Logseq graph in a private Git repository and ensure each device (desktop, laptop, phone) both receives the latest changes and send the latest changes, so you have all your logseq notes in one place always up to date, without manual interventions.</p>
+<p><strong>How this looks in practice:</strong></p>
+<ul>
+<li>Desktop: Logseq app auto-commits locally, using the built in version control feature. Git hooks ensure a pull-before-commit and push-after-commit so changes flow to the remote automatically.</li>
+<li>Android: a sync app detects when Logseq opens/closes and runs pull/push operations for the repository.</li>
+</ul>
+<h3 id="note-on-existing-solutions">Note on existing solutions</h3>
+<p>In the past I have tried using Google Drive for syncing on PC and Syncthing client on Android, but I never got it to work reliable. From time to time, usually when I needed it the most, I would run into conflicts and had to manually resolve them before being able to continue. That put me away. I also tried one drive and FolderSync, but was never really satisfied with the results. There is also Sync service right from the Logseq developers, but it's not free and when I was trying it it had similar conflict issues, so for some time I gave up on logseq and kept using OneNote.. but Logseq is just so much better than I tried again and so far I am very happy with it.</p>
+<h1 id="show-me-how-already">Show me how already!</h1>
+<p>Here's how to set up the syncing on both platforms. I am using Logseq on Windows, but the PC setup is the same for MacOs and Linux. I am using Android on my phone, so this post is about Android, if you are using iOS you might get inspired, there might be equivalent solution, but I kinda doubt it.</p>
+<h2 id="on-pc">On PC</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>Git client installed (Windows: <code>winget install Git.Git</code>) as of writing I am using Git 2.53.0, but it should work with older versions too.</li>
+<li>Logseq desktop installed. As of writing, I am using 0.10.15.</li>
+</ul>
+<h3 id="steps">Steps</h3>
+<ol>
+<li><p>Clone a private Git repository and put your Logseq graph inside it. You should see the .git folder alongside Logseq folders such as assets/ and journals/.</p>
+<p><img src="../assets/images/logseq_git_folder.png" alt="Repository layout" /></p>
+</li>
+<li><p>In Logseq: Settings → Version Control, enable &quot;Git auto commit&quot; and &quot;Git commit on window close&quot;. Choose an auto-commit interval (I use 60 seconds).</p>
+</li>
+<li><p>Add Git hooks to automate pull and push.</p>
+</li>
+</ol>
+<p>Pre-commit hook (save as .git/hooks/pre-commit):</p>
+<pre><code class="language-bash">#!/bin/sh
+# Pull latest before committing to reduce conflicts
+output=$(git pull --no-rebase 2&gt;&amp;1)
+
+if [ &quot;$output&quot; = &quot;Already up to date.&quot; ]; then
+    :
+else
+    echo &quot;${output}&quot;
+fi
+
+git add -A
+</code></pre>
+<p>Post-commit hook (save as .git/hooks/post-commit):</p>
+<pre><code class="language-bash">#!/bin/sh
+# Push changes to remote (change branch if needed)
+
+git push origin main
+</code></pre>
+<blockquote>
+<p>Note: adjust the branch name (main/master) to match your repo. Ensure the hooks are executable on your system.</p>
+</blockquote>
+<h2 id="on-android">On Android</h2>
+<p>Android doesn't support the same background filesystem hooks, because you cannot use git client directly as on windows + the Logseq version control system options for auto commit are not available on android (for the same reasons I assume), so a helper app is needed. I was doing some search around and ended up using <a href="https://play.google.com/store/apps/details?id=com.viscouspot.gitsync">GitSync</a>, which can trigger a pull on app start and a push on app exit by using the Accessibility API.</p>
+<h3 id="steps-1">Steps</h3>
+<ol>
+<li>Install <a href="https://play.google.com/store/apps/details?id=com.viscouspot.gitsync">GitSync</a> (it is free) and authenticate with your git hosting, like github. I suggest using a scoped token, scoped only to that one repository.</li>
+<li>Clone your repository into a folder accessible to Logseq (e.g., a &quot;logseq&quot; folder in internal storage).</li>
+<li>Configure GitSync to pull on Logseq start and push on Logseq exit.</li>
+</ol>
+<p><img src="../assets/images/logseq_gitsync.jpg" alt="GitSync sync settings" /></p>
+<p>That's it! Really. Now you can use Logseq on both PC and Android and have the data syncing automatically. It is not perfect, so there are few caveats to keep in mind:</p>
+<ul>
+<li><strong>One-minute rule</strong>: Desktop auto-commit intervals create a short window where edits may not be visible elsewhere. Wait ~1 minute after editing on one device before opening Logseq on another to reduce conflicts.</li>
+<li><strong>Offline editing</strong>: If you edit the same files on multiple devices while offline, conflicts can occur, so either avoid that, or work in different files or try not to edit the same lines, otherwise you will need to manually resolve the conflict using git merge.</li>
+<li><strong>Accessibility API risk</strong>: Apps that use this API can read screen content. Use with caution.</li>
+</ul>
+<h2 id="credentials-and-security-notes">Credentials and security notes</h2>
+<ul>
+<li>Prefer scoped tokens for github authentication.</li>
+<li>Don't allow more permissions than necessary.</li>
+<li>Be careful when updating the GitSync app. I did some background checks and it seems safe at the moment, so I would pin the version so android doesn't update it automatically. And if you need to update it, I would do research on the health of the repo again. As I said, <strong>it has permissions to see your screen</strong>! It is not using those at the moment, but you never know in the future. We heard about too many supply chain attacks... especially now that using AI everyone could be a hacker!</li>
+</ul>
 
 
+
+<div class="share-buttons" aria-label="Share this post">
+    <span class="share-label">Share:</span>
+
+    <a href="https://twitter.com/intent/tweet?text=Syncing%20Logseq%20across%20devices&amp;url=https%3A%2F%2Fmartinskuta.github.io%2Fposts%2F2026-03-08-syncing-logseq"
+       class="share-btn share-btn--twitter"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Share on Twitter / X">
+        𝕏 Twitter
+    </a>
+
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmartinskuta.github.io%2Fposts%2F2026-03-08-syncing-logseq"
+       class="share-btn share-btn--linkedin"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Share on LinkedIn">
+        in LinkedIn
+    </a>
+
+    <button id="copy-link-btn"
+            class="share-btn share-btn--copy"
+            onclick="copyPostLink()"
+            aria-label="Copy post URL to clipboard">
+        🔗 Copy link
+    </button>
+</div>
         
 
       </div>
     </div>
+  <div id="comments-container" class="row">
+    <div class="col-12 terminal-comments">
+  <div id="giscus-container"></div>
+</div>
+<script>
+  (function () {
+    var container = document.getElementById('giscus-container');
+
+    if (!container) {
+      console.error('Unable to render comments because the Giscus container is missing.');
+      return;
+    }
+
+    var theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark_dimmed';
+    var script = document.createElement('script');
+
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', "martinskuta/martinskuta.github.io");
+    script.setAttribute('data-repo-id', "REPLACE_WITH_REPO_ID");
+    script.setAttribute('data-category-id', "REPLACE_WITH_CATEGORY_ID");
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'top');
+    script.setAttribute('data-theme', theme);
+    script.setAttribute('data-lang', 'en');
+    script.setAttribute('data-loading', 'lazy');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+    container.appendChild(script);
+  })();
+</script>
+
+  </div>
   </div>
 
   <hr>
