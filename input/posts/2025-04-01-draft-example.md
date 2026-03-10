@@ -1,9 +1,9 @@
+---
 Title: Draft Post — Not Published Yet
 Lead: This post is a draft and will not appear on the site until Excluded is removed.
 Published: 2025-04-01
+Tags: [dotnet]
 Excluded: true
-Tags:
-  - dotnet
 ---
 
 ## This is a draft

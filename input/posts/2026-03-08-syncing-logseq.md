@@ -1,8 +1,9 @@
 ---
-title: "Syncing Logseq across devices (PC + Android)"
-date: 2026-03-08
-tags: [logseq, sync, android, git]
-draft: true
+Title: "Syncing Logseq across devices"
+Lead: "How to use Logseq on PC and Android at the same time"
+Published: 2026-03-08
+Tags: [logseq, sync, android, git]
+Excluded: false
 ---
 
 # The problem

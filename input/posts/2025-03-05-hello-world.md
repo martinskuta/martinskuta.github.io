@@ -1,10 +1,8 @@
+---
 Title: Hello World — My First Post
 Lead: Every blog needs a first post. Here's mine.
 Published: 2025-03-05
-Tags:
-  - meta
-  - blogging
-Image: /assets/images/post-bg.jpg
+Tags: [meta, blogging]
 ---
 
 Welcome to my blog! 🎉
